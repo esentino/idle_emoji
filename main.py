@@ -62,7 +62,7 @@ def main(screen: curses.window):
                 sys.exit(0)
 
 
-def display_header(screen: curses.window, row):
+def display_header(screen: curses.window, row: int):
     screen.addstr(row, 0, "Emoji")
     screen.addstr(row, constants.CASH_START_COLUMN_DISPLAY, "Udział w przychodzie")
     screen.addstr(row, constants.LEVEL_START_COLUMN_DISPLAY, "Level")
