@@ -1,12 +1,12 @@
 import curses
-from datetime import datetime
 from math import ceil
 from typing import Tuple
 
-import constants
-from constants import CASH_IMAGE_MAX_DISPLAY
-from emoji import Emoji
-from utils import row_generator, digit_generator
+
+from .constants import CASH_IMAGE_MAX_DISPLAY
+from .emoji import Emoji
+from . import constants
+from .utils import row_generator, digit_generator
 
 
 def display_header(screen: curses.window, row: int):
