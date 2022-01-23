@@ -2,26 +2,25 @@ import json
 from dataclasses import dataclass, field
 from datetime import datetime
 
-import constants
-from constants import SAVE_GAME_FILE
+from . import constants
 
 
 @dataclass
-class GameSave:
+class Save:
     a_level: int = 1
     b_level: int = 0
     c_level: int = 0
     cash: float = 0.0
-    time: datetime = field(default_factory=lambda: datetime.now())
+    time: datetime = field(default_factory=datetime.now)
 
 
-def load_game() -> GameSave:
+def load_game() -> Save:
     try:
-        with open(SAVE_GAME_FILE) as file:
+        with open(constants.SAVE_GAME_FILE) as file:
             data = json.load(file)
     except FileNotFoundError:
-        return GameSave()
-    return GameSave(
+        return Save()
+    return Save(
         data["a"],
         data["b"],
         data["c"],
@@ -30,8 +29,8 @@ def load_game() -> GameSave:
     )
 
 
-def save_game(game: GameSave):
-    with open(SAVE_GAME_FILE, "w") as file:
+def save_game(game: Save):
+    with open(constants.SAVE_GAME_FILE, "w") as file:
         response = {
             "a": game.a_level,
             "b": game.b_level,

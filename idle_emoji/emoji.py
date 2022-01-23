@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 
-from constants import SECOND_IN_MICROSECONDS
+from .constants import SECOND_IN_MICROSECONDS
 
 
 @dataclass
@@ -17,6 +17,14 @@ class Emoji:
 
     @property
     def buy_price(self) -> float:
+        """
+
+        >>> em = Emoji('abc','bcd',4,0,2,2,3)
+        >>> em.buy_price
+        32
+
+        :return:
+        """
         return self.start_price * (self.growth ** self.level)
 
     @property
@@ -31,7 +39,7 @@ class Emoji:
     def production_per_second_after_upgrade(self) -> float:
         return self.production_per_second + self.start_income
 
-    def recalculate(self) -> float:
+    def recalculate(self, current_time: datetime) -> float:
         """
         Calculate income from last check and calculate next last check.
         For example:
@@ -42,9 +50,15 @@ class Emoji:
         In 10s 3 times emoji generate income
         return 3 time income
         and move last tick to 3 times 3s -> 00:00:09
+
+        >>> em = Emoji("a","a",1,1,1,3,1,datetime(2022,1,1,0,0,0,))
+        >>> em.production
+        3
+        >>> em.recalculate(datetime(2022,1,1,0,0,10,))
+        9
+
         :return: return income from elapsed time
         """
-        current_time = datetime.now()
         delta: timedelta = current_time - self.last_tick
         tick_time_in_microseconds = timedelta(microseconds=self.speed * SECOND_IN_MICROSECONDS)
         ticks, _ = delta.__divmod__(tick_time_in_microseconds)
@@ -52,6 +66,17 @@ class Emoji:
         return self.production * ticks
 
     def buy(self, cash: float) -> float:
+        """Lece bo chce
+
+        >>> em = Emoji('aaa', 'aaaa',1,0,1,1,1)
+        >>> em.buy(5)
+        4
+        >>> em.level
+        2
+
+        :param cash:
+        :return:
+        """
         left_cash = cash - self.buy_price
         self.level += 1
         return left_cash
